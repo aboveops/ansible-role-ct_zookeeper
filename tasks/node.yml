@@ -1,0 +1,26 @@
+---
+- name: "{{ ct_zookeeper_task_prefix }} Create config directory"
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+    recurse: true
+  loop:
+    - "{{ ct_zookeeper_path_config_base }}"
+- name: "{{ ct_zookeeper_task_prefix }} Create env file"
+  template:
+    src: "{{ ct_zookeeper_template_env }}"
+    dest: "{{ ct_zookeeper_path_config_file }}"
+    mode: 0644
+- name: "{{ ct_zookeeper_task_prefix }} Create container"
+  docker_container:
+    name: "{{ ct_zookeeper_ct_name }}"
+    image: "{{ ct_zookeeper_ct_image }}:{{ ct_zookeeper_ct_version }}"
+    env_file: "{{ ct_zookeeper_path_config_file }}"
+    restart_policy: "{{ ct_zookeeper_ct_restart_policy }}"
+    state: "{{ ct_zookeeper_ct_state }}"
+    restart: "{{ ct_zookeeper_ct_restart }}"
+    pull: "{{ ct_zookeeper_ct_pull }}"
+    recreate: "{{ ct_zookeeper_ct_recreate }}"
+    network_mode: host
+...
