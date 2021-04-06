@@ -3,15 +3,28 @@
   file:
     path: "{{ item }}"
     state: directory
-    mode: 0755
+    mode: '0755'
     recurse: true
   loop:
     - "{{ ct_zookeeper_path_config_base }}"
+    - "{{ ct_zookeeper_path_base }}"
 - name: "{{ ct_zookeeper_task_prefix }} Create env file"
   template:
     src: "{{ ct_zookeeper_template_env }}"
     dest: "{{ ct_zookeeper_path_config_file }}"
     mode: 0644
+- name: "{{ ct_zookeeper_task_prefix }} Create data directories"
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+    recurse: true
+    user: '1000'
+    group: '1000'
+  loop:
+    - "{{ ct_zookeeper_path_zk_data }}"
+    - "{{ ct_zookeeper_path_zk_logs }}"
+  when: ct_zookeeper_persist_data|bool
 - name: "{{ ct_zookeeper_task_prefix }} Create container"
   docker_container:
     name: "{{ ct_zookeeper_ct_name }}"
