@@ -1,3 +1,6 @@
+# DEPRECATION WARNING
+This Ansible role has been deprecated in favor of collection [`almaops.common`](https://github.com/almaops/ansible-collection-common/tree/master/roles/ct_zookeeper) and is advised to be used instead.
+
 # aboveops.ct_zookeeper
 This role deploys Docker containers with [Apache Zookeeper](https://zookeeper.apache.org)
 
